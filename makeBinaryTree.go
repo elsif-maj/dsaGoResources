@@ -21,7 +21,8 @@ func createBinaryTree[T any](vals []T) *TreeNode[T] {
 	nn := len(vals)
 	qLike := []*TreeNode[T]{}
 
-	// Push to our Queue-like the correct number ('nn') of blank nodes
+	// Push to our Queue-like the correct number ('nn') of nodes, each one with its value
+	// provided from the vals argument
 	for i := 0; i < nn; i++ {
 		thisVal := vals[i]
 		qLike = append(qLike, &TreeNode[T]{thisVal, nil, nil})
