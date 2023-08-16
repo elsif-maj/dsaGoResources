@@ -47,10 +47,10 @@ func createBinaryTree[T any](vals []T) *TreeNode[T] {
 func main() {
 	/* Create the following tree:
 
-					50
-				 /   \
-		 	 25	    75
-			/ \     /  \
+	        50
+	       /   \
+	    25	    75
+	    / \     /  \
 	  10   33  56   89
 	 / \  / \  / \   / \
 	4 11 30 40 52 61 82 95
