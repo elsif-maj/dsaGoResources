@@ -2,17 +2,41 @@ package main
 
 import "fmt"
 
+/////////////////////
+////// Ordered //////
+/////////////////////
+
+type Integer interface {
+	Signed | Unsigned
+}
+
+type Float interface {
+	~float32 | ~float64
+}
+
+type Signed interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64
+}
+
+type Unsigned interface {
+	~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+}
+
+type Ordered interface {
+	Integer | Float | ~string
+}
+
 ///////////////////////
 ////// TreeNodes //////
 ///////////////////////
 
-type TreeNode[T any] struct {
+type TreeNode[T Ordered] struct {
 	value      T
 	leftChild  *TreeNode[T]
 	rightChild *TreeNode[T]
 }
 
-func newTreeNode[T any](val T) *TreeNode[T] {
+func newTreeNode[T Ordered](val T) *TreeNode[T] {
 	return &TreeNode[T]{val, nil, nil}
 }
 
@@ -21,29 +45,29 @@ func newTreeNode[T any](val T) *TreeNode[T] {
 ////////////////////////////
 
 // Search:
-func Search[T int](s T, n *TreeNode[T]) *TreeNode[T] {
+func (n *TreeNode[T]) Search(s T) *TreeNode[T] {
 	if n == nil || n.value == s {
 		return n
 	} else if s < n.value {
-		return Search(s, n.leftChild)
+		return n.Search(s)
 	} else {
-		return Search(s, n.rightChild)
+		return n.Search(s)
 	}
 }
 
 // Insert:
-func Insert[T int](v T, n *TreeNode[T]) {
+func (n *TreeNode[T]) Insert(v T) {
 	if v < n.value {
 		if n.leftChild == nil {
 			n.leftChild = &TreeNode[T]{v, nil, nil}
 		} else {
-			Insert(v, n.leftChild)
+			n.Insert(v)
 		}
 	} else if v > n.value {
 		if n.rightChild == nil {
 			n.rightChild = &TreeNode[T]{v, nil, nil}
 		} else {
-			Insert(v, n.rightChild)
+			n.Insert(v)
 		}
 	}
 }
@@ -55,7 +79,7 @@ func Insert[T int](v T, n *TreeNode[T]) {
 ////// Utility //////
 /////////////////////
 
-func Traverse(f func(int), order string, t *TreeNode[int]) {
+func Traverse[T Ordered](f func(T), order string, t *TreeNode[T]) {
 	if t == nil {
 		return
 	}
@@ -84,7 +108,7 @@ func String(order string, t *TreeNode[int]) string {
 }
 
 // Creates a binary tree given a slice of node values listed in 'level-order'
-func createBinaryTree[T any](vals []T) *TreeNode[T] {
+func createBinaryTree[T Ordered](vals []T) *TreeNode[T] {
 	nn := len(vals)
 	qLike := []*TreeNode[T]{}
 
@@ -128,11 +152,25 @@ func main() {
 	treeHead := createBinaryTree[int](treeVals)
 
 	// Search:
-	fmt.Println(Search[int](33, treeHead))
+	fmt.Println(treeHead.Search(33))
 
 	// Insert:
-	Insert[int](101, treeHead)
+	treeHead.Insert(101)
 	fmt.Println(treeHead.rightChild.rightChild.rightChild.rightChild)
+
+	// Delete:
+
+	t := newTreeNode(5)
+	t.Insert(3)
+	t.Insert(2)
+	t.Insert(4)
+	t.Insert(8)
+	t.Insert(7)
+	t.Insert(9)
+	t.Insert(6)
+	fmt.Println(String("pre", t))
+	fmt.Println(String("in", t))
+	fmt.Println(String("post", t))
 
 	// Delete:
 }
