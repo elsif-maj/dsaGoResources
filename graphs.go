@@ -65,6 +65,24 @@ func dfsStack[T comparable](v *Vertex[T], vv map[T]bool) {
 
 // Breadth-First Search:
 
+func bfs[T comparable](v *Vertex[T]) {
+	q := []*Vertex[T]{}
+	m := map[T]bool{}
+	q = append(q, v)
+	var cv *Vertex[T]
+
+	for len(q) > 0 {
+		cv = q[0]
+		q = q[1:]
+		fmt.Println(q)
+		_, ok := m[cv.value]
+		if !ok {
+			m[cv.value] = true
+			q = append(q, cv.adjVertices...)
+		}
+	}
+}
+
 ///////////////////////////
 ////// Program/Tests //////
 ///////////////////////////
@@ -99,8 +117,13 @@ func main() {
 	derek.addAdjVert(gina)
 	fred.addAdjVert(helen)
 	gina.addAdjVert(irena)
+	candy.addAdjVert(helen)
 	// end
-	m := map[string]bool{}
+
+	// Test stuff:
+
+	// m := map[string]bool{}
 	// dfsRec(alice, m)
-	dfsStack(alice, m)
+	// dfsStack(alice, m)
+	bfs(alice)
 }
