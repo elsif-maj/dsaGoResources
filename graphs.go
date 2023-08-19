@@ -89,13 +89,13 @@ func bfs[T comparable](v *Vertex[T]) {
 
 func main() {
 	/*
-				         __ Alice __
-				        /   /   \   \
-				     Bob Candy Derek-Elaine
-		          |    |     |
-						 Fred  /    Gina
-		          |   /      |
-						 Helen      Irena
+	       __ Alice __
+	      /   /   \   \
+	   Bob Candy Derek-Elaine
+	    |    |     |
+	   Fred  /    Gina
+	    |   /      |
+	   Helen      Irena
 	*/
 	// Create the above graph:
 	// Begin
